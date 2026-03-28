@@ -84,8 +84,8 @@ async function main(){
     const card = document.createElement('div'); card.className='card'
     card.innerHTML = `
       <div class="kanji">${w.kanji}</div>
-      <div class="kana">${w.kana}</div>
-      <div class="meaning reveal"><span class="cover">${w.meaning}</span></div>
+      <div class="kana reveal"><span class=\"cover\">${w.kana}</span></div>
+      <div class="meaning">${w.meaning}</div>
       <div class="meta">#${idx+1}</div>
     `
     list.appendChild(card)
@@ -102,12 +102,12 @@ function startQuiz(words,key){
   const box = document.getElementById('quiz'); box.style.display='block'; box.innerHTML=''
   let score = 0
   words.forEach((w,i)=>{
-    // 3 個干擾選項
-    const others = shuffle(words.filter(x=>x!==w).slice(0,3).map(x=>x.meaning))
-    const choices = shuffle([w.meaning, ...others])
+    // 3 個干擾選項（讀音）
+    const others = shuffle(words.filter(x=>x!==w).slice(0,3).map(x=>x.kana))
+    const choices = shuffle([w.kana, ...others])
     const q = document.createElement('div'); q.className='q'
     q.innerHTML = `
-      <div><strong>Q${i+1}.</strong> 「${w.kanji}（${w.kana}）」的意思是？</div>
+      <div><strong>Q${i+1}.</strong> 「${w.kanji}」的讀音是？</div>
       <div class="choices"></div>
     `
     const wrap = q.querySelector('.choices')
@@ -116,7 +116,7 @@ function startQuiz(words,key){
       btn.onclick = ()=>{
         if (btn.disabled) return
         [...wrap.children].forEach(b=>b.disabled=true)
-        if (ch===w.meaning){ btn.classList.add('correct'); score++ } else { btn.classList.add('wrong') }
+        if (ch===w.kana){ btn.classList.add('correct'); score++ } else { btn.classList.add('wrong') }
         updateScore()
       }
       wrap.appendChild(btn)
