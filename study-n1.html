@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>蝦蝦の日文 N1｜每日 10 單字 + 小考</title>
+  <meta name="description" content="每日 10 個 N1 單字（台灣時間 05:00 更新），含隱藏解答與小考模式。">
+  <style>
+    :root{--bg:#0f1226;--card:#151a3d;--text:#e6e9f5;--muted:#aab0cf;--ok:#33d17a;--warn:#ffcc00;--accent:#ff6b6b}
+    *{box-sizing:border-box}
+    body{margin:0;background:#0b0e1d;color:var(--text);font-family:ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans TC","Helvetica Neue",Arial}
+    header{position:sticky;top:0;background:linear-gradient(180deg,#0c0f22 0%,rgba(12,15,34,.7) 60%,rgba(12,15,34,0) 100%);backdrop-filter:saturate(140%) blur(6px);padding:14px 16px 8px;border-bottom:1px solid rgba(255,255,255,.05)}
+    h1{margin:0;font-size:20px}
+    main{max-width:960px;margin:0 auto;padding:14px}
+    .row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:6px 0 14px}
+    .btn{appearance:none;background:#1a2050;color:#e6e9f5;border:1px solid rgba(255,255,255,.12);padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:600}
+    .btn.primary{background:linear-gradient(180deg,#ff7a7a 0%,#ff6262 100%);color:#101226;border-color:transparent}
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+    .card{background:linear-gradient(180deg,#161b40 0%,#0f1330 100%);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:12px}
+    .kanji{font-size:22px;font-weight:800;letter-spacing:.5px}
+    .kana{color:var(--muted);font-size:14px;margin-top:2px}
+    .meaning{margin-top:8px;line-height:1.6}
+    .meaning .cover{filter:blur(7px);opacity:.7;transition:filter .2s ease,opacity .2s ease}
+    .reveal:hover .cover{filter:none;opacity:1}
+    .meta{color:var(--muted);font-size:12px;margin-top:8px}
+    .quiz{margin-top:18px;padding:12px;border:1px dashed rgba(255,255,255,.18);border-radius:12px}
+    .q{padding:10px 0;border-top:1px solid rgba(255,255,255,.06)}
+    .q:first-child{border-top:none}
+    .choices{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+    .choice{background:#101436;border:1px solid rgba(255,255,255,.12);padding:8px;border-radius:10px;cursor:pointer}
+    .choice.correct{outline:2px solid var(--ok)}
+    .choice.wrong{outline:2px solid #ff4d4d}
+    .score{margin-top:10px;font-weight:700}
+    footer{padding:24px;color:var(--muted);text-align:center}
+    .pill{display:inline-block;background:#222752;border:1px solid rgba(255,255,255,.14);padding:4px 8px;border-radius:999px;font-size:12px;color:#d4d8ef}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>蝦蝦の日文 N1｜每日 10 單字</h1>
+    <div class="row">
+      <div>
+        <span id="date" class="pill"></span>
+        <span id="status" class="pill" style="margin-left:6px"></span>
+      </div>
+      <div>
+        <button class="btn" id="revealAll">顯示全部解答</button>
+        <button class="btn primary" id="startQuiz">開始小考</button>
+      </div>
+    </div>
+  </header>
+  <main>
+    <div id="list" class="grid"></div>
+    <section id="quiz" class="quiz" style="display:none"></section>
+  </main>
+  <footer>每天台灣時間 05:00 產生新題。資料僅保存在你的瀏覽器（localStorage）。</footer>
+<script>
+const TZ = 'Asia/Taipei'
+const todayTz = () => {
+  const now = new Date()
+  const f = new Intl.DateTimeFormat('zh-TW', { timeZone: TZ, year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', hour12:false })
+  const parts = Object.fromEntries(f.formatToParts(now).map(p=>[p.type,p.value]))
+  const h = parseInt(parts.hour,10)
+  const d = new Date(parts.year+'-'+parts.month+'-'+parts.day+'T00:00:00Z')
+  // 如果小於 05:00，視為前一天
+  if (h < 5) d.setUTCDate(d.getUTCDate()-1)
+  return d
+}
+const dateKey = () => todayTz().toISOString().slice(0,10)
+function xmur3(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19;}return function(){h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return (h^h>>>16)>>>0}}
+function sfc32(a,b,c,d){return function(){a>>>0;b>>>0;c>>>0;d>>>0;var t=(a+b)|0;a=b^b>>>9;b=c+(c<<3)|0;c=(c<<21|c>>>11);d=d+1|0;t=t+d|0;c=c+t|0;return (t>>>0)/4294967296}}
+function sampleN(arr,n,seedStr){const seed=xmur3(seedStr);const rnd=sfc32(seed(),seed(),seed(),seed());const pick=[...arr.keys()];for(let i=pick.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[pick[i],pick[j]]=[pick[j],pick[i]]}return pick.slice(0,Math.min(n,arr.length)).map(i=>arr[i])}
+async function main(){
+  const res = await fetch('assets/n1.json'); const data = await res.json()
+  const key = dateKey();
+  const set = sampleN(data,10,'n1:'+key)
+  const local = JSON.parse(localStorage.getItem('n1:'+key)||'{}')
+  document.getElementById('date').textContent = `今日題庫（${new Intl.DateTimeFormat('zh-TW',{ timeZone: TZ, dateStyle:'medium'}).format(todayTz())}，05:00 產生）`
+  document.getElementById('status').textContent = local.done? `已完成小考：${local.score||0}/10` : '尚未作答'
+  const list = document.getElementById('list')
+  list.innerHTML = ''
+  set.forEach((w,idx)=>{
+    const card = document.createElement('div'); card.className='card'
+    card.innerHTML = `
+      <div class="kanji">${w.kanji}</div>
+      <div class="kana">${w.kana}</div>
+      <div class="meaning reveal"><span class="cover">${w.meaning}</span></div>
+      <div class="meta">#${idx+1}</div>
+    `
+    list.appendChild(card)
+  })
+  // Reveal all
+  document.getElementById('revealAll').onclick = () => {
+    document.querySelectorAll('.meaning .cover').forEach(el=>{ el.style.filter='none'; el.style.opacity='1' })
+  }
+  // Quiz
+  document.getElementById('startQuiz').onclick = () => startQuiz(set,key)
+}
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function startQuiz(words,key){
+  const box = document.getElementById('quiz'); box.style.display='block'; box.innerHTML=''
+  let score = 0
+  words.forEach((w,i)=>{
+    // 3 個干擾選項
+    const others = shuffle(words.filter(x=>x!==w).slice(0,3).map(x=>x.meaning))
+    const choices = shuffle([w.meaning, ...others])
+    const q = document.createElement('div'); q.className='q'
+    q.innerHTML = `
+      <div><strong>Q${i+1}.</strong> 「${w.kanji}（${w.kana}）」的意思是？</div>
+      <div class="choices"></div>
+    `
+    const wrap = q.querySelector('.choices')
+    choices.forEach(ch=>{
+      const btn = document.createElement('button'); btn.className='choice'; btn.textContent = ch
+      btn.onclick = ()=>{
+        if (btn.disabled) return
+        [...wrap.children].forEach(b=>b.disabled=true)
+        if (ch===w.meaning){ btn.classList.add('correct'); score++ } else { btn.classList.add('wrong') }
+        updateScore()
+      }
+      wrap.appendChild(btn)
+    })
+    box.appendChild(q)
+  })
+  const s = document.createElement('div'); s.className='score'; s.id='score'; s.textContent = '得分：0/10'
+  box.appendChild(s)
+  function updateScore(){
+    s.textContent = `得分：${score}/10`
+    if ([...box.querySelectorAll('.choice')].every(b=>b.disabled)){
+      localStorage.setItem('n1:'+key, JSON.stringify({ done:true, score }))
+      document.getElementById('status').textContent = `已完成小考：${score}/10`
+    }
+  }
+  window.scrollTo({ top: document.body.scrollHeight, behavior:'smooth' })
+}
+main()
+</script>
+</body>
+</html>
